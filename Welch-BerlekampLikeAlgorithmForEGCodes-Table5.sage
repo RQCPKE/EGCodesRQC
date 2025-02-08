@@ -84,6 +84,23 @@ def WelchBerlekampDecoding(n, k, g, y):
     ff, re = N_1.left_quo_rem(W_1)
     return ff
 
+def test(totalltests):
+    succ = 0
+    failure = 0
+    for npair in range(totalltests):
+        e = random_small_vec_gen(n, r)
+        y = Codeword + e
+        ff = WelchBerlekampDecoding(n, k, g, y)
+        try:
+            if (vector(ff.padded_list(k))==Message) and (y - vector(ff.multi_point_evaluation(g)) == e): 
+                succ += 1
+            else:
+                failure += 1
+        except:
+            print("Unexpected error", sys.exc_info()[0])
+            
+    print ("success/totalltests: %d/%d; success rate: %f" % (succ,totalltests,succ/totalltests))
+    print ("failure/totalltests: %d/%d; failure rate: %f" % (failure,totalltests,failure/totalltests))
 
 # Compute Theoretical and Simulated DFR by Theorem 3 for code parameters in Table 5
 # increase m
@@ -142,20 +159,5 @@ g = random_small_vec_gen(n, min(m, n, t))
 #g1 = random_small_vec_gen(t, t);  g2 = zero_vector(Fqm, n-t);  g = vector(g1.list() + g2.list())
 Codeword = Encoding_Gabidulin(Message, g)
 
-def test(totalltests):
-    succ = 0
-    failure = 0
-    for npair in range(totalltests):
-        e = random_small_vec_gen(n, r)
-        y = Codeword + e
-        ff = WelchBerlekampDecoding(n, k, g, y)
-        try:
-            if (vector(ff.padded_list(k))==Message) and (y - vector(ff.multi_point_evaluation(g)) == e): 
-                succ += 1
-            else:
-                failure += 1
-        except:
-            print("Unexpected error", sys.exc_info()[0])
-            
-    print ("success/totalltests: %d/%d; success rate: %f" % (succ,totalltests,succ/totalltests))
-    print ("failure/totalltests: %d/%d; failure rate: %f" % (failure,totalltests,failure/totalltests))
+
+%time test(100000)

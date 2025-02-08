@@ -58,8 +58,7 @@ def Blockwise_RQC_Dec(Private_Key,Ciphertext,SH_Support,r):
 
 # EG + Our RQC
 (q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,53,89,5,4,4,4,4,4) # EG + OurRQC -128
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,67,107,6,4,5,4,5,5) # EG + OurRQC -192
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,61,109,5,4,5,4,5,4) # EG + OurRQC -192
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,60,107,6,4,5,4,5,4) # EG + OurRQC -192
 #(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # EG + OurRQC -256
 
 

@@ -85,9 +85,52 @@ def WelchBerlekampDecoding(n, k, g, y):
     return ff
 
 
-# (q, m, n, t, k, r) = (2,83,79, 83, 7,36) 
-(q, m, n, t, k, r) = (2, 53, 89, 53, 5, 1) 
-(q, m, n, t, k, r) = (2, 5, 7, 5, 2, 2) 
+# Compute Theoretical and Simulated DFR by Theorem 3 for code parameters in Table 5
+# increase m
+#(q,m,n,t,k,r) = (2,31,41,31,9,16)   # DFR: 2**(-5)
+#(q,m,n,t,k,r) = (2,32,41,32,9,16)   # DFR: 2**(-6)
+#(q,m,n,t,k,r) = (2,33,41,33,9,16)   # DFR: 2**(-7)
+#(q,m,n,t,k,r) = (2,34,41,34,9,16)   # DFR: 2**(-8)
+#(q,m,n,t,k,r) = (2,35,41,35,9,16)   # DFR: 2**(-9)
+# TheoreticalDFR = [0.0313, 0.0156, 0.0078, 0.0039, 0.0020]
+# SimulatedDFR = [0.0150, 0.0076, 0.0038, 0.0017, 0.0008]
+
+# increase t
+#(q,m,n,t,k,r) = (2,35,41,30,9,16)   # DFR: 2**(-4)
+#(q,m,n,t,k,r) = (2,35,41,31,9,16)   # DFR: 2**(-5)
+#(q,m,n,t,k,r) = (2,35,41,32,9,16)   # DFR: 2**(-6)
+#(q,m,n,t,k,r) = (2,35,41,33,9,16)   # DFR: 2**(-7)
+#(q,m,n,t,k,r) = (2,35,41,34,9,16)   # DFR: 2**(-8)
+# TheoreticalDFR = [0.0625, 0.0313, 0.0156, 0.0078, 0.0039]
+# SimulatedDFR = [0.0310, 0.0150, 0.0084, 0.0036, 0.0018] 
+
+# increase t < n < m; increase t
+#(q,m,n,t,k,r) = (2,29,26,16,5,10)   # DFR: 2**(-2)
+#(q,m,n,t,k,r) = (2,29,26,17,5,10)   # DFR: 2**(-4)
+#(q,m,n,t,k,r) = (2,29,26,18,5,10)   # DFR: 2**(-6)
+#(q,m,n,t,k,r) = (2,29,26,19,5,10)   # DFR: 2**(-8)
+#(q,m,n,t,k,r) = (2,29,26,20,5,10)   # DFR: 2**(-10)
+# TheoreticalDFR = [0.2500, 0.0625, 0.0156, 0.0039, 0.00098]
+# SimulatedDFR = [0.1320, 0.0372, 0.0098, 0.0025, 0.00058] 
+
+# Decoding up to the RGV bound (k > r)
+# Hash-Sign 
+#(q,m,n,t,k,r) = (2,30,37,30,23,7)   # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,30,38,30,22,8)   # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,30,39,30,21,9)   # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,30,40,30,20,10)  # DFR: 2**(1) 
+#(q,m,n,t,k,r) = (2,30,41,30,19,11)  # DFR: 2**(1)
+# TheoreticalDFR = [1, 1, 1, 1, 1]
+# SimulatedDFR = [0.7120, 0.7087, 0.7100, 0.7105, 0.7141] 
+
+# Decoding up to the RGV bound (k < r)
+#(q,m,n,t,k,r) = (2,21,34,21,8,13)  # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,22,36,22,8,14)  # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,23,38,23,8,15)  # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,24,40,24,8,16)  # DFR: 2**(1)
+#(q,m,n,t,k,r) = (2,25,42,25,8,17)  # DFR: 2**(1)
+# TheoreticalDFR = [1, 1, 1, 1, 1]
+# SimulatedDFR = [0.7124, 0.7120, 0.7118, 0.7120, 0.7125]
 
 Fqm.<a> = GF(q**m)
 Frob = Fqm.frobenius_endomorphism()
@@ -98,9 +141,21 @@ Message = random_vector(Fqm, k)
 g = random_small_vec_gen(n, min(m, n, t))
 #g1 = random_small_vec_gen(t, t);  g2 = zero_vector(Fqm, n-t);  g = vector(g1.list() + g2.list())
 Codeword = Encoding_Gabidulin(Message, g)
-e = random_small_vec_gen(n,r)
-y = Codeword + e
 
-%time ff = WelchBerlekampDecoding(n, k, g, y)
-    
-print("Ture or False ? : ", y - vector(ff.multi_point_evaluation(g))== e and vector(ff.padded_list(k))==Message) 
+def test(totalltests):
+    succ = 0
+    failure = 0
+    for npair in range(totalltests):
+        e = random_small_vec_gen(n, r)
+        y = Codeword + e
+        ff = WelchBerlekampDecoding(n, k, g, y)
+        try:
+            if (vector(ff.padded_list(k))==Message) and (y - vector(ff.multi_point_evaluation(g)) == e): 
+                succ += 1
+            else:
+                failure += 1
+        except:
+            print("Unexpected error", sys.exc_info()[0])
+            
+    print ("success/totalltests: %d/%d; success rate: %f" % (succ,totalltests,succ/totalltests))
+    print ("failure/totalltests: %d/%d; failure rate: %f" % (failure,totalltests,failure/totalltests))

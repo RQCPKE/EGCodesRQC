@@ -1,4 +1,4 @@
-######## Test Heuristic  Argument in Theorem 9 (Page 36) for weight w < r #############
+######## Test Heuristic  Argument for weight w < r #############
 
 def random_small_vector_genenration(Extension, Length, Weight):
     B = matrix(Fqm.base_ring(), Weight, Extension, 0)

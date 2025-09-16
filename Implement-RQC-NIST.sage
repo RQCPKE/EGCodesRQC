@@ -1,4 +1,4 @@
-# RQC-NIST
+# Implement RQC in NIST
 
 def random_small_vec_gen(n,t):
     B = matrix(Fqm.base_ring(),t,m,0)

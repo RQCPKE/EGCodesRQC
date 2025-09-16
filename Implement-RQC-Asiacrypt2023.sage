@@ -1,4 +1,4 @@
-# RQC Asiacrypt 2023 (Table 4)
+# Implement RQC in Asiacrypt 2023 or TIT 2025
 
 def random_small_vec_gen(n,t):
     B = matrix(Fqm.base_ring(),t,m,0)

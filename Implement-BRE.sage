@@ -1,4 +1,4 @@
-# EG codes + Our RQC (Table 4)
+# Implement BRE
 
 def random_small_vec_gen(n,t):
     B = matrix(Fqm.base_ring(),t,m,0)
@@ -56,10 +56,10 @@ def Blockwise_RQC_Dec(Private_Key,Ciphertext,SH_Support,r):
     return Decoding_EG(Noisy_Word, SH_Support,r)
 
 
-# EG + Our RQC
-(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,53,83,5,4,4,4,4,4) # EG + OurRQC -128
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,60,107,6,4,5,4,5,4) # EG + OurRQC -192
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # EG + OurRQC -256
+# Eurocrypt 2026; BRE
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,47,89,3,4,4,4,4,4) # BRE -128
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,59,113,4,4,5,4,5,4) # BRE -192
+(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # BRE -256
 
 
 Fqm = GF(q**m)

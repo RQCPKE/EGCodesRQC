@@ -1,4 +1,4 @@
-# Implement HURE 
+# Implement Muti-UR-AG 
 
 def random_small_space_gen(t):
     B = matrix(Fqm.base_ring(),t,m,0)

@@ -19,7 +19,7 @@ def test(totalltests):
     failure = 0
     for npair in range(totalltests):
         f = S.random_element(degree=(-1,k-1))  # The message polynomial
-        e = random_small_vector_genenration(m, n, w)    # Generating the error e of weight r 
+        e = random_small_vector_genenration(m, n, w)    # Generating the error e of weight w
         y = vector([f(g[i]) + e[i] for i in range(n)])    
         y_monomials = [y[i]**(q**j) for i in range(n) for j in range(r+1)] 
         A1 = matrix(Fqm, n, r+1, y_monomials) 

@@ -1,4 +1,4 @@
-# Test decoding failure rate of EG codes
+# Test decoding failure rate of AG codes
 # Decoding errors of weight exactly error_weight w < r
 # Standard Gaussian elimination 
 

@@ -12,7 +12,7 @@ def random_small_vec_gen(n,t):
 def rank_R(z):
     return matrix(Fqm.base_ring(),n,m,[vector(z[i]) for i in range(n)]).rank()
 
-def Encoding_EG(Message, SH_Support):
+def Encoding_AG(Message, SH_Support):
     f = S(Message.list())  # The message polynomial 
     return vector(f.multi_point_evaluation(SH_Support))
 
@@ -45,7 +45,7 @@ def Blockwise_RQC_Enc(Public_Key,Message,SH_Support):
     r2 = R(list(random_small_vec_gen(n,w_r2)))
     e = R(list(random_small_vec_gen(n,w_e)))
     u = r1 + Public_Key[0]*r2
-    v = Encoding_EG(Message,SH_Support)+  vector(e + Public_Key[1]*r2)
+    v = Encoding_AG(Message,SH_Support)+  vector(e + Public_Key[1]*r2)
     ct = [vector(u),v]
     return ct
 
@@ -56,7 +56,7 @@ def Blockwise_RQC_Dec(Private_Key,Ciphertext,SH_Support,r):
     return Decoding_AG(Noisy_Word, SH_Support,r)
 
 
-# Eurocrypt 2026; BRE
+# BRE
 #(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,47,89,3,4,4,4,4,4) # BRE -128
 #(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,59,113,4,4,5,4,5,4) # BRE -192
 (q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # BRE -256

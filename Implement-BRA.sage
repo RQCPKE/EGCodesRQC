@@ -16,7 +16,7 @@ def Encoding_EG(Message, SH_Support):
     f = S(Message.list())  # The message polynomial 
     return vector(f.multi_point_evaluation(SH_Support))
 
-def Decoding_EG(Noisy_Word, SH_Support,r): 
+def Decoding_AG(Noisy_Word, SH_Support,r): 
     g_monomials = [SH_Support[i]**(q**j) for i in range(n) for j in range(k+r)] 
     SC2 = matrix(Fqm,n,k+r,g_monomials) 
     y_monomials = [Noisy_Word[i]**(q**j) for i in range(n) for j in range(r+1)] 
@@ -53,7 +53,7 @@ def Blockwise_RQC_Enc(Public_Key,Message,SH_Support):
 def Blockwise_RQC_Dec(Private_Key,Ciphertext,SH_Support,r):  
     u = R(list(Ciphertext[0]))
     Noisy_Word = Ciphertext[1] - vector(u*Private_Key[1])
-    return Decoding_EG(Noisy_Word, SH_Support,r)
+    return Decoding_AG(Noisy_Word, SH_Support,r)
 
 
 # Eurocrypt 2026; BRE

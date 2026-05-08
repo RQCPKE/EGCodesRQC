@@ -1,4 +1,4 @@
-# Test decoding failure probability of EG codes
+# Test decoding failure probability of AG codes
 # Decoding errors of weight exactly r
 
 

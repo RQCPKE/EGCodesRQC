@@ -49,11 +49,11 @@ def homogenous_matrix_gen_with_support_one(n1,n2,support):
     H_list = [Fqm(list(F.random_element())) for _ in range(n1*n2)]
     return matrix(Fqm,n1,n2,H_list)
 
-def Encoding_EG(Message, SH_Support):
+def Encoding_AG(Message, SH_Support):
     f = S(Message.list())  # The message polynomial 
     return vector(f.multi_point_evaluation(SH_Support))
 
-def Decoding_EG(Noisy_Word, SH_Support, r): 
+def Decoding_AG(Noisy_Word, SH_Support, r): 
     code_length = len(list(SH_Support))
     g_monomials = [SH_Support[i]**(q**j) for i in range(code_length) for j in range(k+r)] 
     SC2 = matrix(Fqm,code_length,k+r,g_monomials) 
@@ -89,7 +89,7 @@ def Blockwise_RQC_MS_Enc(Public_Key, Message,EG_Generator):
     U = R1 + Public_Key[0].transpose() * R2
     
     VV = E + Public_Key[1].transpose() * R2 
-    V = Fold(Encoding_EG(Message,EG_Generator), N1, N2) + VV 
+    V = Fold(Encoding_AG(Message,EG_Generator), N1, N2) + VV 
     
     ct = [U, V]
     return ct
@@ -98,7 +98,7 @@ def Blockwise_RQC_MS_Enc(Public_Key, Message,EG_Generator):
 def Blockwise_RQC_MS_Dec(Private_Key, Ciphertext, EG_Generator, r):  
     Fold_Noisy_Word = Ciphertext[1] - Private_Key[1].transpose() * Ciphertext[0]
     Noisy_Word = UnFold(Fold_Noisy_Word)
-    return Decoding_EG(Noisy_Word, EG_Generator,r)
+    return Decoding_AG(Noisy_Word, EG_Generator,r)
 
 
 # HURE

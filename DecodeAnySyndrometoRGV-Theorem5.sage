@@ -1,4 +1,4 @@
-# Decoding any syndrome by EG codes to errors of weight the RGV bound 
+# Decoding any syndrome by AG codes to errors of weight the RGV bound 
 
 from sage.coding.linear_rank_metric import rank_weight
 

@@ -102,9 +102,9 @@ def Blockwise_RQC_MS_Dec(Private_Key, Ciphertext, EG_Generator, r):
 
 
 # Muti-UR-AG 
-(q,m,n,N1,N2,k,t,w_1,w_2) = (2,67,30,10,13,3,67,7,8) # HURE -128
-(q,m,n,N1,N2,k,t,w_1,w_2) = (2,83,38,12,14,3,83,8,9) # HURE -192
-#(q,m,n,N1,N2,k,t,w_1,w_2) = (2,113,45,13,15,3,113,9,10) # HURE -256
+(q,m,n,N1,N2,k,t,w_1,w_2) = (2,67,30,10,13,3,67,7,8) # Muti-UR-AG-128
+(q,m,n,N1,N2,k,t,w_1,w_2) = (2,83,38,12,14,3,83,8,9) # Muti-UR-AG-192
+#(q,m,n,N1,N2,k,t,w_1,w_2) = (2,113,45,13,15,3,113,9,10) # Muti-UR-AG-256
 
 
 Fqm = GF(q**m)

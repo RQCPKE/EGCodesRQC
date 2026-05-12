@@ -1,4 +1,4 @@
-# Implement BRA
+# BRA
 
 def random_small_vec_gen(n,t):
     B = matrix(Fqm.base_ring(),t,m,0)
@@ -12,11 +12,11 @@ def random_small_vec_gen(n,t):
 def rank_R(z):
     return matrix(Fqm.base_ring(),n,m,[vector(z[i]) for i in range(n)]).rank()
 
-def Encoding_AG(Message, SH_Support):
+def Encoding_EG(Message, SH_Support):
     f = S(Message.list())  # The message polynomial 
     return vector(f.multi_point_evaluation(SH_Support))
 
-def Decoding_AG(Noisy_Word, SH_Support,r): 
+def Decoding_EG(Noisy_Word, SH_Support,r): 
     g_monomials = [SH_Support[i]**(q**j) for i in range(n) for j in range(k+r)] 
     SC2 = matrix(Fqm,n,k+r,g_monomials) 
     y_monomials = [Noisy_Word[i]**(q**j) for i in range(n) for j in range(r+1)] 
@@ -31,7 +31,7 @@ def Decoding_AG(Noisy_Word, SH_Support,r):
     return vector(ff.list())
     
 # Key Generation
-def Blockwise_RQC_KGen(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e):
+def BRA_KGen(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e):
     h = R.random_element()
     x = R(list(random_small_vec_gen(n,w_x)))
     y = R(list(random_small_vec_gen(n,w_y)))
@@ -40,26 +40,32 @@ def Blockwise_RQC_KGen(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e):
     return pk,sk
 
 # Encryption
-def Blockwise_RQC_Enc(Public_Key,Message,SH_Support):  
+def BRA_Enc(Public_Key,Message,SH_Support):  
     r1 = R(list(random_small_vec_gen(n,w_r1)))
     r2 = R(list(random_small_vec_gen(n,w_r2)))
     e = R(list(random_small_vec_gen(n,w_e)))
     u = r1 + Public_Key[0]*r2
-    v = Encoding_AG(Message,SH_Support)+  vector(e + Public_Key[1]*r2)
+    v = Encoding_EG(Message,SH_Support)+  vector(e + Public_Key[1]*r2)
     ct = [vector(u),v]
     return ct
 
 # Decryption
-def Blockwise_RQC_Dec(Private_Key,Ciphertext,SH_Support,r):  
+def BRA_Dec(Private_Key,Ciphertext,SH_Support,r):  
     u = R(list(Ciphertext[0]))
     Noisy_Word = Ciphertext[1] - vector(u*Private_Key[1])
-    return Decoding_AG(Noisy_Word, SH_Support,r)
+    return Decoding_EG(Noisy_Word, SH_Support,r)
 
 
-# BRE
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,47,89,3,4,4,4,4,4) # BRE -128
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,59,113,4,4,5,4,5,4) # BRE -192
-(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # BRE -256
+# BRA
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,47,89,3,4,4,4,4,4) # BRA-128
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,59,113,4,4,5,4,5,4) # BRA-192
+(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # BRA-256
+
+
+# Conservative BRA 
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,57,106,3,4,4,5,5,5) # EG + OurRQC -128
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,83,161,3,4,5,7,7,7) # EG + OurRQC -128
+#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,113,223,3,5,5,9,9,9) # EG + OurRQC -128
 
 
 Fqm = GF(q**m)
@@ -69,13 +75,13 @@ R.<X> = P.quotient(P1)
 Frob = Fqm.frobenius_endomorphism()
 S = OrePolynomialRing(Fqm, Frob, 'x')
 
-%time Public_Key, Private_Key = Blockwise_RQC_KGen(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e)
+%time Public_Key, Private_Key = BRA_KGen(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e)
 
 Message = random_vector(Fqm,k); g = random_small_vec_gen(n,min(n,m))
-%time Ciphertext = Blockwise_RQC_Enc(Public_Key,Message,g)
+%time Ciphertext = BRA_Enc(Public_Key,Message,g)
 
 r = w_x*w_r2 + w_y*w_r1 + w_e
-%time Message_test = Blockwise_RQC_Dec(Private_Key,Ciphertext,g,r)
+%time Message_test = BRA_Dec(Private_Key,Ciphertext,g,r)
 
 # check correctness
 Message_test == Message

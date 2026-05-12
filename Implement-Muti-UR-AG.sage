@@ -69,7 +69,7 @@ def Decoding_AG(Noisy_Word, SH_Support, r):
     return vector(ff.list())
     
 # Key Generation
-def Blockwise_RQC_MS_KGen(q,m,n,N1,N2,k,t,w_1,w_2):
+def MutiURAG_KGen(q,m,n,N1,N2,k,t,w_1,w_2):
     H = random_matrix(Fqm, n, n)
     Support = random_support_gen(w_1)
     X = homogenous_matrix_gen_with_support_one(n,N1,Support)
@@ -79,7 +79,7 @@ def Blockwise_RQC_MS_KGen(q,m,n,N1,N2,k,t,w_1,w_2):
     return pk, sk
 
 # Encryption
-def Blockwise_RQC_MS_Enc(Public_Key, Message,EG_Generator):  
+def MutiURAG_Enc(Public_Key, Message,EG_Generator):  
     Support = random_support_gen(w_2)
     R1 = homogenous_matrix_gen_with_support(n,N2,Support)
     E = homogenous_matrix_gen_with_support(N1,N2,Support)
@@ -95,29 +95,29 @@ def Blockwise_RQC_MS_Enc(Public_Key, Message,EG_Generator):
     return ct
 
 # Decryption
-def Blockwise_RQC_MS_Dec(Private_Key, Ciphertext, EG_Generator, r):  
+def MutiURAG_Dec(Private_Key, Ciphertext, EG_Generator, r):  
     Fold_Noisy_Word = Ciphertext[1] - Private_Key[1].transpose() * Ciphertext[0]
     Noisy_Word = UnFold(Fold_Noisy_Word)
     return Decoding_AG(Noisy_Word, EG_Generator,r)
 
 
 # Muti-UR-AG 
-(q,m,n,N1,N2,k,t,w_1,w_2) = (2,67,30,10,13,3,67,7,8) # Muti-UR-AG-128
-(q,m,n,N1,N2,k,t,w_1,w_2) = (2,83,38,12,14,3,83,8,9) # Muti-UR-AG-192
-#(q,m,n,N1,N2,k,t,w_1,w_2) = (2,113,45,13,15,3,113,9,10) # Muti-UR-AG-256
+#(q,m,n,N1,N2,k,t,w_1,w_2) = (2,67,30,10,13,3,67,7,8) # Muti-UR-AG-128
+#(q,m,n,N1,N2,k,t,w_1,w_2) = (2,83,38,12,14,3,83,8,9) # Muti-UR-AG-192
+(q,m,n,N1,N2,k,t,w_1,w_2) = (2,113,45,13,15,3,113,9,10) # Muti-UR-AG-256
 
 
 Fqm = GF(q**m)
 Frob = Fqm.frobenius_endomorphism()
 S = OrePolynomialRing(Fqm, Frob, 'x')
 
-%time Public_Key, Private_Key = Blockwise_RQC_MS_KGen(q,m,n,N1,N2,k,t,w_1,w_2)
+%time Public_Key, Private_Key = MutiURAG_KGen(q,m,n,N1,N2,k,t,w_1,w_2)
 
 Message = random_vector(Fqm, k);  g = random_small_vec_gen(N1*N2, m)
-%time Ciphertext = Blockwise_RQC_MS_Enc(Public_Key, Message, g)
+%time Ciphertext = MutiURAG_Enc(Public_Key, Message, g)
 
 r = w_1*w_2
-%time Message_test = Blockwise_RQC_MS_Dec(Private_Key, Ciphertext, g, r)
+%time Message_test = MutiURAG_Dec(Private_Key, Ciphertext, g, r)
 
 # check correctness
 Message_test == Message

@@ -140,7 +140,7 @@ def LowMS_Decap(Private_Key, Ciphertext):
     return hashlib.sha256(E_string.encode()).hexdigest()
 
 
-(q, m, n, k, r, w, N) = (2, 79, 78, 39, 8, 4, 5)   # 128
+(q, m, n, k, r, w, N) = (2, 79, 78, 39, 8, 4, 5)   # 192
 
 import hashlib
 Fqm = GF(q**m)

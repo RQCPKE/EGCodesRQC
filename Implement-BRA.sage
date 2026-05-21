@@ -62,11 +62,6 @@ def BRA_Dec(Private_Key,Ciphertext,SH_Support,r):
 (q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,73,137,4,5,5,5,5,7) # BRA-256
 
 
-# Conservative BRA 
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,57,106,3,4,4,5,5,5) # EG + OurRQC -128
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,83,161,3,4,5,7,7,7) # EG + OurRQC -128
-#(q,m,n,k,w_x,w_y,w_r1,w_r2,w_e) = (2,113,223,3,5,5,9,9,9) # EG + OurRQC -128
-
 
 Fqm = GF(q**m)
 P1  = GF(q)['XX'].irreducible_element(n, algorithm = "minimal_weight")

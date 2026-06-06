@@ -1,3 +1,5 @@
+# Welch-Berlekamp with Loidreau's improved technique proposed in DCC 2018 (section 4.4.2) 
+
 
 def random_small_vec_gen(n,t): 
     B = matrix(Fqm.base_ring(),t,m,0)
